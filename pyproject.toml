@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "Snake-DeepLearning"
+version = "0.1.0"
+description = ""
+authors = ["Kir Chou"]
+
+[tool.poetry.dependencies]
+python = "^3.7"
+# See README.md, pygame should be installed manually
+# pygame = "^1.9.6"
+
+[tool.poetry.dev-dependencies]
+
+[tool.poetry.scripts]
+game = "snake_deeplearning.game:main"
+
+[build-system]
+requires = ["poetry>=0.12"]
+build-backend = "poetry.masonry.api"
