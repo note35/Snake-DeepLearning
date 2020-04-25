@@ -54,6 +54,13 @@ python3.7 ~/.poetry/bin/poetry install
 python3.7 ~/.poetry/bin/poetry run game
 ```
 
+5. Generate Training Data
+
+```bash
+python3.7 ~/.poetry/bin/poetry run generate
+```
+
+
 # Cleanup
 
 ```bash
