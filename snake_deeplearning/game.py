@@ -5,6 +5,13 @@ import random
 import time
 
 
+'''
+LEFT -> button_direction = 0
+RIGHT -> button_direction = 1
+DOWN -> button_direction = 2
+UP -> button_direction = 3
+'''
+
 class SnakeGame:
     SPEED = 10
     SIDE = 500
@@ -12,7 +19,8 @@ class SnakeGame:
     WHITE = (255, 255, 255)
     YELLOW = (255, 255, 0)
     BLACK = (0, 0, 0)
-    CLOCK = pygame.time.Clock() 
+    CLOCK = pygame.time.Clock()
+    # OBSTACLES = 0
 
     def __init__(self):
         self.reset_game()
@@ -22,6 +30,7 @@ class SnakeGame:
         self.head = [250,250]
         self.body = [[250,250],[240,250],[230,250],[220,250]]
         self.apple_position = [random.randrange(1, 50) * 10, random.randrange(1, 50) * 10]
+        # self.obstacles = [[random.randrange(1, 50) * 10, random.randrange(1, 50) * 10] for _ in range(self.OBSTACLES)]
         self.score = 0
 
     def __start_game(self):
@@ -46,17 +55,33 @@ class SnakeGame:
         self.score += 1
 
     def __meet_boundaries(self, head):
-        return 0 if self.SIDE > head[0] >= 0 and self.SIDE > head[1] >= 0 else 1
+        if self.SIDE > head[0] >= 0 and self.SIDE > head[1] >= 0:
+            return 0
+        else:
+            return 1
 
     def __meet_self(self, head):
-        return 1 if head in self.body[1:] else 0
+        if head in self.body[1:]:
+            return 1
+        else:
+            return 0
 
-    def _meet_obstacle(self, current_direction_vec=None):
+    '''
+    def __meet_obstacles(self, head):
+        if head in self.obstacles:
+            return 1
+        else:
+            return 0
+    '''
+
+    def meet_obstacle(self, current_direction_vec=None):
         if current_direction_vec is None:
-            return 1 if self.__meet_boundaries(self.head) == 1 or self.__meet_self(self.head) == 1 else 0
+            return 1 if self.__meet_boundaries(self.head) or self.__meet_self(self.head) else 0
+            # return 1 if self.__meet_boundaries(self.head) or self.__meet_self(self.head) or self.__meet_obstacles(self.head) else 0
         else:
             next_step = self.head + current_direction_vec
-            return 1 if self.__meet_boundaries(next_step) == 1 or self.__meet_self(next_step.tolist()) == 1 else 0
+            return 1 if self.__meet_boundaries(next_step) or self.__meet_self(next_step.tolist()) else 0
+            # return 1 if self.__meet_boundaries(next_step) or self.__meet_self(next_step.tolist()) or self.__meet_obstacles(self.head) else 0
 
     def _generate_snake(self, button_direction):
         if button_direction == 1:
@@ -94,6 +119,16 @@ class SnakeGame:
             pygame.Rect(self.apple_position[0], self.apple_position[1], 10, 10)
         )
 
+    '''
+    def _display_obstacles(self):
+        for obs in self.obstacles:
+            pygame.draw.rect(
+                self.display,
+                self.RED,
+                pygame.Rect(obs[0], obs[1], 10, 10)
+            )
+    '''
+
     def __display_score(self, display_text):
         largeText = pygame.font.Font('freesansbold.ttf', 35)
         TextSurf = largeText.render(display_text, True, self.WHITE)
@@ -128,6 +163,7 @@ class SnakeGame:
         
             self.display.fill(self.BLACK)
             self._display_apple()
+            # self._display_obstacles()
             self._display_snake()
             self._generate_snake(button_direction)
 
@@ -135,7 +171,7 @@ class SnakeGame:
             pygame.display.update()
 
             prev_button_direction = button_direction
-            if self._meet_obstacle() == 1:
+            if self.meet_obstacle() == 1:
                 crashed = True
                 break
 
@@ -150,15 +186,11 @@ class SnakeGameForTraining(SnakeGame):
         left_direction_vec = np.array([current_direction_vec[1], -current_direction_vec[0]])
         right_direction_vec = np.array([-current_direction_vec[1], current_direction_vec[0]])
 
-        is_front_blocked = self._meet_obstacle(current_direction_vec)
-        is_left_blocked = self._meet_obstacle(left_direction_vec)
-        is_right_blocked = self._meet_obstacle(right_direction_vec)
+        is_front_blocked = self.meet_obstacle(current_direction_vec)
+        is_left_blocked = self.meet_obstacle(left_direction_vec)
+        is_right_blocked = self.meet_obstacle(right_direction_vec)
 
-        return is_front_blocked, is_left_blocked, is_right_blocked
-
-    # Unused function in tutorial
-    # def get_apple_distance_from_snake(self):
-    #     return np.linalg.norm(np.array(self.apple_position) - np.array(self.body[0]))
+        return current_direction_vec, is_front_blocked, is_left_blocked, is_right_blocked
 
     def get_angle_with_apple(self):
         apple_direction_vec = np.array(self.apple_position) - np.array(self.body[0])
@@ -190,7 +222,7 @@ class SnakeGameForTraining(SnakeGame):
             direction = 0
         return self.direction_vector(angle_with_apple, direction)
 
-    def __generate_button_direction(self, new_direction):
+    def generate_button_direction(self, new_direction):
         if new_direction == [10, 0]:
             return 1
         elif new_direction == [-10, 0]:
@@ -211,7 +243,7 @@ class SnakeGameForTraining(SnakeGame):
         if direction == 1:
             new_direction = right_direction_vec
 
-        button_direction = self.__generate_button_direction(new_direction.tolist())
+        button_direction = self.generate_button_direction(new_direction.tolist())
         return direction, button_direction
 
     def play_game_by_ai(self, button_direction):
@@ -224,6 +256,7 @@ class SnakeGameForTraining(SnakeGame):
             
             self.display.fill(self.BLACK)
             self._display_apple()
+            # self._display_obstacles()
             self._display_snake()
             self._generate_snake(button_direction)
 

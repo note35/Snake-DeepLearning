@@ -54,12 +54,21 @@ python3.7 ~/.poetry/bin/poetry install
 python3.7 ~/.poetry/bin/poetry run game
 ```
 
-5. Generate Training Data
+5. Generate Training Model
 
 ```bash
-python3.7 ~/.poetry/bin/poetry run generate
+python3.7 ~/.poetry/bin/poetry run generate_model
 ```
 
+- Run 100 games with 2000 steps will get about 95% accurate result.
+- This training model has one defect, it will hit self while head is surrending by body but apple appears in the other side of body. (Therefore, the model based on this training data will hit similar error.)
+- This training model doesn't support additional obstacles in the map. One TODO work is to support this use case.
+
+6. Run Game with Model
+
+```bash
+python3.7 ~/.poetry/bin/poetry run test_model
+```
 
 # Cleanup
 
@@ -71,3 +80,4 @@ python3.7 ~/.poetry/bin/poetry env remove 3.7
 
 - https://theailearner.com/2018/04/19/snake-game-with-deep-learning/
 - https://github.com/TheAILearner/Snake-Game-with-Deep-learning
+- https://github.com/TheAILearner/Training-Snake-Game-With-Genetic-Algorithm
