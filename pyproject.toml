@@ -20,6 +20,7 @@ game = "snake_deeplearning.game:main"
 generate_data = "snake_deeplearning.training_data_generator:main_generate_data"
 generate_model = "snake_deeplearning.training_data_generator:main_generate_model"
 test_model = "snake_deeplearning.training_data_generator:main_apply_model"
+test_genetic = "snake_deeplearning.training_data_generator:main_apply_genetic_algorithm"
 
 [build-system]
 requires = ["poetry>=0.12"]

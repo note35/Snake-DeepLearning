@@ -70,6 +70,12 @@ python3.7 ~/.poetry/bin/poetry run generate_model
 python3.7 ~/.poetry/bin/poetry run test_model
 ```
 
+7. Run Game with Genetic Algorithm (without traning data)
+
+```bash
+python3.7 ~/.poetry/bin/poetry run test_genetic
+```
+
 # Cleanup
 
 ```bash
