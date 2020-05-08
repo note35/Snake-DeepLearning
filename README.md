@@ -64,17 +64,40 @@ python3.7 ~/.poetry/bin/poetry run generate_model
 - This training model has one defect, it will hit self while head is surrending by body but apple appears in the other side of body. (Therefore, the model based on this training data will hit similar error.)
 - This training model doesn't support additional obstacles in the map. One TODO work is to support this use case.
 
+**DEMO: Generate model in 2000 steps**
+
+![generate_model_2000steps.gif](demo/generate_model_2000steps.gif)
+
+
 6. Run Game with Model
 
 ```bash
 python3.7 ~/.poetry/bin/poetry run test_model
 ```
 
+**DEMO: Apply model with 100 rounds in 200 steps**
+
+![test_model_100_200](demo/test_model_100_200.gif)
+
+**DEMO: Apply model with 1000 rounds in 2000 steps**
+
+![test_model_1000_2000.gif](demo/test_model_1000_2000.gif)
+
+
 7. Run Game with Genetic Algorithm (without traning data)
 
 ```bash
 python3.7 ~/.poetry/bin/poetry run test_genetic
 ```
+
+**DEMO: Apply Genetic Algorithm (2001st generation)**
+
+![test_genetic_2000steps.gif](demo/test_genetic.gif)
+
+**DEMO: Apply Genetic Algorithm with 50 obstables (2001st generation)**
+
+![test_genetic_obstacles.gif](demo/test_genetic_obstacles.gif)
+
 
 # Cleanup
 
